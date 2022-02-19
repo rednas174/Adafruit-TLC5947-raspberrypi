@@ -24,9 +24,11 @@
 #include <iostream>
 #include <signal.h>
 #include <unistd.h>
+#include <chrono>
+#include <thread>
 
 // How many boards do you have chained?
-#define NUM_TLC5947 1
+#define NUM_TLC5947 4
 
 #define data    12
 #define clock   14
@@ -47,7 +49,7 @@ void interrupt_routine(int call_num);
 
 int pin = 30;
 
-int usdelay = 1 * 1000;
+int usdelay = 500 * 1000;
 
 int main() {
  
@@ -66,16 +68,19 @@ int main() {
 
   std::cout << "Started successfully, timer interrupt handles the switching of the colours :)\n";
 
-  while (1);
+  while (1){
+  	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  }
   return 1;
 
 }
 
-
 int v = 0;
+int inc = 100;
+int max = 2048;
 void make_red(){
-  v++;
-  v = v%1024;
+  v+=inc;
+  v = v%max;
   for (int i = 0; i < 8 * NUM_TLC5947; i++){
     tlc.setLED(i, v, 0, 0);
   }
@@ -83,8 +88,8 @@ void make_red(){
 }
 
 void make_green(){
-  v++;
-  v = v%1024;
+  v+=inc;
+  v = v%max;
   for (int i = 0; i < 8 * NUM_TLC5947; i++){
     tlc.setLED(i, 0, v, 0);
   }
@@ -92,8 +97,8 @@ void make_green(){
 }
 
 void make_blue(){
-  v++;
-  v = v%1024;
+  v+=inc;
+  v = v%max;
   for (int i = 0; i < 8 * NUM_TLC5947; i++){
     tlc.setLED(i, 0, 0, v);
   }
