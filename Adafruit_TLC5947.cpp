@@ -64,11 +64,12 @@ void Adafruit_TLC5947::write() {
     for (int8_t b = 11; b >= 0; b--) {
       digitalWrite(_clk, LOW);
 
-      if (pwmbuffer[c] & (1 << b))
+      digitalWrite(_dat, (pwmbuffer[c] & (1 << b)));
+      /* if (pwmbuffer[c] & (1 << b))
         digitalWrite(_dat, HIGH);
       else
         digitalWrite(_dat, LOW);
-
+*/
       digitalWrite(_clk, HIGH);
     }
   }

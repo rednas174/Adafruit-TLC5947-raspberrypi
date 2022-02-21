@@ -28,7 +28,7 @@
 #include <thread>
 
 // How many boards do you have chained?
-#define NUM_TLC5947 4
+#define NUM_TLC5947 8
 
 #define data    12
 #define clock   14
@@ -46,6 +46,8 @@ void make_green();
 void make_blue();
 void interrupt_routine(int call_num);
 
+//                {18 17 27 22 23 24 25 6}
+int layerPins[] = {1, 0, 2, 3, 4, 5, 6, 22};
 
 int pin = 30;
 
@@ -55,7 +57,17 @@ int main() {
  
   std::cout << "starting...\n";
 
-  wiringPiSetup();	
+  wiringPiSetup();
+
+  for (int i = 0; i <= 8; i++){
+    pinMode(layerPins[i], OUTPUT);
+    digitalWrite(layerPins[i], LOW);
+  }
+
+  pinMode(23, OUTPUT);
+  digitalWrite(23, HIGH);
+  digitalWrite(layerPins[0], HIGH);
+
   tlc.begin();
 
   signal(SIGALRM, interrupt_routine);   
@@ -75,8 +87,8 @@ int main() {
 
 }
 
-int v = 0;
-int inc = 100;
+int v = 2047;
+int inc = 0;
 int max = 2048;
 void make_red(){
   v+=inc;
