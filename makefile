@@ -1,11 +1,23 @@
-output: example.o Adafruit_TLC5947.o
-	g++ example.o Adafruit_TLC5947.o -o output -lwiringPi
+OBJS	= Adafruit_TLC5947.o cube_main.o Cube.o
+SOURCE	= Adafruit_TLC5947.cpp cube_main.cpp Cube.cpp
+HEADER	= Adafruit_TLC5947.h Cube.h
+OUT	= output
+CC	 = g++
+FLAGS	 = -g -c -Wall
+LFLAGS	 = -lwiringPi
 
-tlc5947.o: Adafruit_TLC5947.cpp Adafruit_TLC5947.h
-	g++ -c Adafruit_TLC5947.cpp
+all: $(OBJS)
+	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)
 
-start.o: example.cpp
-	g++ -c example.cpp
+Adafruit_TLC5947.o: Adafruit_TLC5947.cpp
+	$(CC) $(FLAGS) Adafruit_TLC5947.cpp 
+
+cube_main.o: cube_main.cpp
+	$(CC) $(FLAGS) cube_main.cpp 
+
+Cube.o: Cube.cpp
+	$(CC) $(FLAGS) Cube.cpp 
+
 
 clean:
-	rm *.o output
+	rm -f $(OBJS) $(OUT)
