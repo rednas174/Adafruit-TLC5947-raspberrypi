@@ -25,21 +25,21 @@ Cube::Cube(){
   std::cout << "Started successfully, timer interrupt handles the switching of the colours :)\n";
 }
 
-void Cube::drawLine(Point start, Point end){
+void Cube::drawLine(Point start, Point end, int r, int g, int b){
   float step_size = 0.5;
   float x = (float)start.x;
   float y = (float)start.y;
   float z = (float)start.z;
   while (Point((int)x, (int)y, (int)z).distance(end) > 1){
-    printf("%f, %f, %f\n", x, y, z);
-    drawPixel(Point(round(x), round(y), round(z)), 0, 100, 255);
+    // printf("%f, %f, %f\n", x, y, z);
+    drawPixel(Point(round(x), round(y), round(z)), r, g, b);
     Vector3D vector = Vector3D(start, end);
     vector.normalize();
     x += (vector.x * step_size);
     y += (vector.y * step_size);
     z += (vector.z * step_size);
   } 
-  drawPixel(Point(round(x), round(y), round(z)), 0, 100, 255);
+  drawPixel(Point(round(x), round(y), round(z)), r, g, b);
 }
 
 void Cube::drawCircle(Point *center, int radius, Plane plane){
@@ -52,10 +52,21 @@ void Cube::drawPixel(Point p, int r, int g, int b){
   frame_buffer[p.x][p.y][p.z][2] = b;
 }
 
+void Cube::fill(int r, int g, int b){
+  for (int x = 0; x < 8; x++){
+    for (int y = 0; y < 8; y++){
+      for (int z = 0; z < 8; z++){    
+        frame_buffer[x][y][z][0] = r;
+        frame_buffer[x][y][z][1] = g;
+        frame_buffer[x][y][z][2] = b;
+      }
+    }
+  }
+}
+
 void Cube::handle_draw_frame(){
   // Go to next layer
   digitalWrite(layerPins[curLayer], LOW);
-  // curLayer = 5;
   curLayer = (curLayer + 1) % 8;
   // Write the layer pixels
   for (int x = 0; x < 8; x++){

@@ -66,8 +66,10 @@ class Cube {
 public:
   Cube();
 
-  void drawLine(Point start, Point end);
-  
+  void drawLine(Point start, Point end, int r, int g, int b);
+ 
+  void fill(int r, int g, int b);
+
   void drawCircle(Point *center, int radius, Plane plane);
   
   void drawPixel(Point p, int r, int g, int b);

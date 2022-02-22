@@ -59,36 +59,23 @@ Adafruit_TLC5947::Adafruit_TLC5947(uint16_t n, uint8_t c, uint8_t d,
  *    @brief  Writes PWM data to the all connected TLC5947 boards
  */
 
-int loopDelay = 15;
+int loopDelay = 2;
 void Adafruit_TLC5947::write() {
   digitalWrite(_lat, LOW);
   // 24 channels per TLC5974
   for (int16_t c = 24 * numdrivers - 1; c >= 0; c--) {
     // 12 bits per channel, send MSB first
     for (int8_t b = 11; b >= 0; b--) {
-      
       for (int i = 0; i < loopDelay; i++){}
-      
       digitalWrite(_clk, LOW);
-
       for (int i = 0; i < loopDelay; i++){}
       digitalWrite(_dat, pwmbuffer[c] & (1 << b) ? HIGH : LOW);
       for (int i = 0; i < loopDelay; i++){}
-      /*if (pwmbuffer[c] & (1 << b))
-        digitalWrite(_dat, HIGH);
-      else
-        digitalWrite(_dat, LOW);
-      */
-      // for (int i = 0; i < 5; i++){}
-    
       digitalWrite(_clk, HIGH);
     }
-    // for (int i = 0; i < 1000; i++){}
-    // std::this_thread::sleep_for(std::chrono::milliseconds(1));
   }
   digitalWrite(_clk, LOW);
   digitalWrite(_lat, HIGH);
-  // digitalWrite(_lat, LOW);
 }
 
 /*!
