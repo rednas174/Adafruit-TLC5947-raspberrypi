@@ -26,7 +26,7 @@ public:
     this->z = z;
   }
   float distance(Point b){
-    return abs(sqrt(pow(b.x - this->x, 2) + pow(b.y - this->y, 2) + pow(b.z - this->z, 2)));
+    return abs(sqrt((float)pow(b.x - this->x, 2) + (float)pow(b.y - this->y, 2) + (float)pow(b.z - this->z, 2)));
   }
 };
 
