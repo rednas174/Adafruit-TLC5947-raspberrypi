@@ -59,7 +59,7 @@ Adafruit_TLC5947::Adafruit_TLC5947(uint16_t n, uint8_t c, uint8_t d,
  *    @brief  Writes PWM data to the all connected TLC5947 boards
  */
 
-int loopDelay = 2;
+int loopDelay = 1;
 void Adafruit_TLC5947::write() {
   digitalWrite(_lat, LOW);
   // 24 channels per TLC5974
@@ -87,10 +87,10 @@ void Adafruit_TLC5947::write() {
  *            pwm value [0-4095]
  */
 void Adafruit_TLC5947::setPWM(uint16_t chan, uint16_t pwm) {
-  if (pwm > 4095)
+  /*if (pwm > 4095)
     pwm = 4095;
   if (chan > 24 * numdrivers)
-    return;
+    return; */
   pwmbuffer[chan] = pwm;
 }
 
@@ -107,9 +107,9 @@ void Adafruit_TLC5947::setPWM(uint16_t chan, uint16_t pwm) {
  */
 void Adafruit_TLC5947::setLED(uint16_t lednum, uint16_t r, uint16_t g,
                               uint16_t b) {
-  setPWM(lednum * 3, r);
+  setPWM(lednum * 3, b);
   setPWM(lednum * 3 + 1, g);
-  setPWM(lednum * 3 + 2, b);
+  setPWM(lednum * 3 + 2, r);
 }
 
 /*!
