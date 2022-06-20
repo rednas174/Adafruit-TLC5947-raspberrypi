@@ -25,27 +25,36 @@ int main(){
 
   std::this_thread::sleep_for(std::chrono::milliseconds(25));
 
-  cube.drawPixel(Point(0,0,0), 1024, 0, 0);
-  std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-  cube.drawPixel(Point(7,0,0), 0, 1024, 0);
-  std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-  cube.drawPixel(Point(7,7,0), 0, 0, 1024);
-  std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-  cube.drawPixel(Point(7,7,7), 1024, 1024, 1024);
-  std::this_thread::sleep_for(std::chrono::milliseconds(25000000));
-
-
+  int r = 0;
+  int g = 0;
+  int b = 0;
+  int sleep = 100;
   while(true){
-    std::this_thread::sleep_for(std::chrono::milliseconds(250));
-    for (int i = 0; i < 8; i++){
-      cube.fill(0,0,0);
-      cube.drawLine(Point(7,0,0), Point(0,7-i,7), 1024, 1024, 1024);
-      std::this_thread::sleep_for(std::chrono::milliseconds(25));
-    }
-    for (int i = 0; i < 8; i++){
-      cube.fill(0,0,0);
-      cube.drawLine(Point(7,i,0), Point(0,7-i,7), 1024, 1024, 1024);
-      std::this_thread::sleep_for(std::chrono::milliseconds(25));
+    std::this_thread::sleep_for(std::chrono::milliseconds(25));
+    
+    for (int layer = 0; layer < 8; layer++){
+      switch(layer % 2){
+        case 0:
+          for (int i = 0; i < 8; i++){
+            if (i == 0){
+              r = rand()%1024;
+              g = rand()%1024;
+              b = rand()%1024;
+	    }
+	    cube.fill(0,0,0);
+            cube.drawLine(Point(0,layer,i), Point(7,layer,7-i), r, g, b);
+	    std::this_thread::sleep_for(std::chrono::milliseconds(sleep));
+	  }
+          
+          break;
+        case 1:
+          for (int i = 0; i < 8; i++){
+	    cube.fill(0,0,0);
+            cube.drawLine(Point(7-i,layer,0), Point(i,layer,7), r, g, b);
+	    std::this_thread::sleep_for(std::chrono::milliseconds(sleep));
+	  }
+          break;
+      }
     }
   }
   return 1;
