@@ -59,7 +59,7 @@ Adafruit_TLC5947::Adafruit_TLC5947(uint16_t n, uint8_t c, uint8_t d,
  *    @brief  Writes PWM data to the all connected TLC5947 boards
  */
 
-int loopDelay = 1;
+int loopDelay = 2;
 void Adafruit_TLC5947::write() {
   digitalWrite(_lat, LOW);
   // 24 channels per TLC5974
