@@ -1,16 +1,16 @@
-OBJS	= Adafruit_TLC5947.o cube_main.o Cube.o
-SOURCE	= Adafruit_TLC5947.cpp cube_main.cpp Cube.cpp
-HEADER	= Adafruit_TLC5947.h Cube.h
+OBJS	= TLC_5947.o cube_main.o Cube.o
+SOURCE	= TLC_5947.cpp cube_main.cpp Cube.cpp
+HEADER	= TLC_5947.h Cube.h
 OUT	= output
 CC	 = g++
 FLAGS	 = -g -c -Wall
-LFLAGS	 = -lwiringPi
+LFLAGS	 = -lwiringPi -lpthread
 
 all: $(OBJS)
 	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)
 
-Adafruit_TLC5947.o: Adafruit_TLC5947.cpp
-	$(CC) $(FLAGS) Adafruit_TLC5947.cpp 
+TLC_5947.o: TLC_5947.cpp
+	$(CC) $(FLAGS) TLC_5947.cpp 
 
 cube_main.o: cube_main.cpp
 	$(CC) $(FLAGS) cube_main.cpp 

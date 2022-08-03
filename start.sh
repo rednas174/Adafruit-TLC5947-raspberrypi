@@ -1,3 +1,2 @@
 make
-./output &
-sudo taskset -cp 3 $!
+sudo taskset -c 3 ./output &

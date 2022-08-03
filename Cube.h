@@ -2,7 +2,7 @@
 #ifndef CUBE_H
 #define CUBE_H
 
-#include "Adafruit_TLC5947.h"
+#include "TLC_5947.h"
 #include <iostream>
 #include <unistd.h>
 #include <math.h>
@@ -15,6 +15,7 @@
 #define LATCH   21
 #define OE     -1  // set to -1 to not use the enable pin (its optional)
 
+/* Used for XYZ coordinates */
 class Point {
 public:
   int x;
@@ -25,10 +26,12 @@ public:
     this->y = y;
     this->z = z;
   }
-  float distance(Point b){
-    return abs(sqrt((float)pow(b.x - this->x, 2) + (float)pow(b.y - this->y, 2) + (float)pow(b.z - this->z, 2)));
+  float distance(Point *b){
+    /* Apparently C++17 has an std::hypot(x, y, z), but I guess the C++ used with the RPI does not... */
+    return hypot(hypot(b->x - this->x, b->y - this->y), b->z - this->z);
   }
 };
+
 
 class Vector3D {
 public:
@@ -40,10 +43,10 @@ public:
     this->y = y;
     this->z = z;
   }
-  Vector3D(Point start, Point end){
-    this->x = end.x - start.x;
-    this->y = end.y - start.y;
-    this->z = end.z - start.z;
+  Vector3D(Point *start, Point *end){
+    this->x = end->x - start->x;
+    this->y = end->y - start->y;
+    this->z = end->z - start->z;
   }
   void normalize(float scaling){
     float magnitude = abs(sqrt(pow(this->x, 2) + pow(this->y, 2) + pow(this->z, 2)));
@@ -56,30 +59,39 @@ public:
   }
 };
 
+/*
 enum Plane {
   plane_x,
   plane_y,
   plane_z
 };
+*/
 
 class Cube {
 public:
   Cube();
 
-  void drawLine(Point start, Point end, int r, int g, int b);
+  void drawLine(Point *start, Point *end, int r, int g, int b);
  
   void fill(int r, int g, int b);
 
-  void drawCircle(Point *center, int radius, Plane plane);
+  void drawSphere(Point *center, int radius, int r, int g, int b, bool mode_additive);
+  void drawSphere(Point *center, int radius, int r, int g, int b);
   
-  void drawPixel(Point p, int r, int g, int b);
+  void drawCube(Point *A, Point *B, int r, int g, int b);
+  
+  void drawPixel(Point *p, int r, int g, int b);
+  
+  bool capCube(Point *A, Point *B);
   
   void handle_draw_frame();
   
-  //               x  y  z  rgb
-  int frame_buffer[8][8][8][ 3 ] = {0};
+  /* 4D frame buffer x  y  z  rgb */
+  int   frame_buffer[8][8][8][ 3 ] = {0};
 private:
   Adafruit_TLC5947 tlc = Adafruit_TLC5947(NUM_TLC5947, CLOCK, DATA, LATCH);
+
+  /* DON'T TOUCH THESE!!! (pins for the LEDcube) */
   int layerPins[8] = {1, 0, 2, 3, 4, 5, 6, 22};
   int curLayer = 0;
 };
