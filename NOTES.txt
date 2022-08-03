@@ -1,0 +1,8 @@
+/boot/cmdline.txt
+console=serial0,115200 console=tty1 root=PARTUUID=7ccc94ae-02 rootfstype=ext4 fsck.repair=yes rootwait isolcpus=3
+                                                                                                       ^^^^^^^^^^
+                                                                   Dit isoleert core 3 op de RPI zodat geen enkel ander proces van deze core gebruik kan maken
+
+
+The automated running on boot is done by /etc/rc.local
+taskset sets the process on a specific core, this case it's 3.

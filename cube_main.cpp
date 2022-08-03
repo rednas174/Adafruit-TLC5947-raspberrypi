@@ -47,8 +47,9 @@ int in = 4095;
 int main(){
   
   /* Wait for system to fully have booted */
+  cube.fill(0,0,0);
   std::this_thread::sleep_for(std::chrono::milliseconds(10000));
-  
+
   /* START necessary code for starting thread */
   pthread_create(&thread_id, NULL, display_frames, NULL);
   /* END */
