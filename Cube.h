@@ -89,7 +89,7 @@ public:
   /* 4D frame buffer x  y  z  rgb */
   int   frame_buffer[8][8][8][ 3 ] = {0};
 private:
-  Adafruit_TLC5947 tlc = Adafruit_TLC5947(NUM_TLC5947, CLOCK, DATA, LATCH);
+  TLC_5947 tlc = TLC_5947(NUM_TLC5947, CLOCK, DATA, LATCH);
 
   /* DON'T TOUCH THESE!!! (pins for the LEDcube) */
   int layerPins[8] = {1, 0, 2, 3, 4, 5, 6, 22};
